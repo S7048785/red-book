@@ -8,7 +8,7 @@ import { Providers } from "./providers";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
-import SideMenu from "@/components/SideMenu";
+import SideMenu from "@/components/SideMenu/SideMenu";
 import DefaultLayout from "@/components/default-layout";
 
 export const metadata: Metadata = {
