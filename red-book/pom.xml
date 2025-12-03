@@ -1,0 +1,181 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.example</groupId>
+  <artifactId>red-book</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>red-book</name>
+  <url>http://maven.apache.org</url>
+  <modules>
+    <module>auth</module>
+    <module>framework</module>
+  </modules>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- JDK 版本 -->
+    <java.version>17</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <!-- Maven 相关版本号 -->
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+    <!-- 依赖包版本 -->
+    <lombok.version>1.18.30</lombok.version>
+    <spring-boot.version>3.0.2</spring-boot.version>
+    <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
+    <spring-cloud.version>2022.0.0</spring-cloud.version>
+    <hutool.version>5.8.26</hutool.version>
+    <jimmer.version>0.9.64</jimmer.version>
+    <knife4j.version>4.5.0</knife4j.version>
+    <springdoc-openapi-starter-webmvc-api.version>2.3.0</springdoc-openapi-starter-webmvc-api.version>
+    <mysql.version>8.0.32</mysql.version>
+  </properties>
+
+  <!-- 统一依赖管理 -->
+  <dependencyManagement>
+
+    <dependencies>
+      <!-- mysql -->
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+        <version>${springdoc-openapi-starter-webmvc-api.version}</version>
+      </dependency>
+<!--      Knife4j-->
+      <dependency>
+        <groupId>com.github.xiaoymin</groupId>
+        <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+        <version>${knife4j.version}</version>
+      </dependency>
+<!--      Jimmer-->
+      <dependency>
+        <groupId>org.babyfish.jimmer</groupId>
+        <!-- 用户编写的实体代码所需的依赖 -->
+        <artifactId>jimmer-core</artifactId>
+        <version>${jimmer.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.babyfish.jimmer</groupId>
+        <!-- 生成的代码所需的依赖 -->
+        <artifactId>jimmer-sql</artifactId>
+        <version>${jimmer.version}</version>
+        <!--其他项目必然导入包含此依赖-->
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.babyfish.jimmer</groupId>
+        <artifactId>jimmer-spring-boot-starter</artifactId>
+        <version>${jimmer.version}</version>
+      </dependency>
+
+      <!-- 业务接口日志组件 -->
+      <dependency>
+        <groupId>com.quanxiaoha</groupId>
+        <artifactId>xiaoha-spring-boot-starter-biz-operationlog</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cn.hutool</groupId>
+        <artifactId>hutool-all</artifactId>
+        <version>${hutool.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.example.framework.common</groupId>
+        <artifactId>common</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+
+      <!-- 避免编写那些冗余的 Java 样板式代码，如 get、set 等 -->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+      </dependency>
+
+      <!-- Spring Boot 官方依赖管理 -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Spring Cloud Alibaba 官方依赖管理 -->
+      <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+        <version>${spring-cloud-alibaba.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Spring Cloud 官方依赖管理 -->
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <!-- 统一插件管理 -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${spring-boot.version}</version>
+          <executions>
+            <execution>
+              <id>repackage</id>
+              <goals>
+                <goal>repackage</goal> <!-- 将依赖的 Jar 一起打包 -->
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <annotationProcessorPaths>
+              <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+              </path>
+
+              <path>
+                <groupId>org.babyfish.jimmer</groupId>
+                <artifactId>jimmer-apt</artifactId>
+                <version>${jimmer.version}</version>
+              </path>
+            </annotationProcessorPaths>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+  </build>
+</project>
