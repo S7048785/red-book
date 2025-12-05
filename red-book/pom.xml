@@ -32,12 +32,19 @@
     <knife4j.version>4.5.0</knife4j.version>
     <springdoc-openapi-starter-webmvc-api.version>2.3.0</springdoc-openapi-starter-webmvc-api.version>
     <mysql.version>8.0.32</mysql.version>
+    <sa-token.version>1.38.0</sa-token.version>
   </properties>
 
   <!-- 统一依赖管理 -->
   <dependencyManagement>
 
     <dependencies>
+      <!-- Sa-Token 权限认证 -->
+      <dependency>
+        <groupId>cn.dev33</groupId>
+        <artifactId>sa-token-spring-boot3-starter</artifactId>
+        <version>${sa-token.version}</version>
+      </dependency>
       <!-- mysql -->
       <dependency>
         <groupId>mysql</groupId>
