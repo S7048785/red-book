@@ -4,6 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.example.framework.common.exception.BaseExceptionInterface;
 
+/**
+ * @author Nyxcirea
+ * @date 2025/12/8 19:45
+ * @description: 响应状态码枚举类
+ */
 @Getter
 @AllArgsConstructor
 public enum ResponseCodeEnum implements BaseExceptionInterface {

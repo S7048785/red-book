@@ -15,8 +15,8 @@ public class RedisKeyConstant {
 	
 	/**
 	 * 构建验证码 KEY
-	 * @param phone
-	 * @return
+	 * @param phone 手机号
+	 * @return 验证码 KEY
 	 */
 	public static String buildVerificationCodeKey(String phone) {
 		return VERIFICATION_CODE_KEY_PREFIX + phone;

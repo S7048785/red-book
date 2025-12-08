@@ -13,6 +13,9 @@ build/
 .env.test.local
 .env.production.local
 
+# 配置文件
+application-dev.yml
+
 # 日志文件
 logs/
 *.log

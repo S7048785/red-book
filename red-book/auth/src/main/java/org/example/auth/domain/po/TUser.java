@@ -8,7 +8,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 用户表
+ * @author Nyxcirea
+ * @date 2025/12/8 19:45
+ * @description: 用户表
  */
 @Table(name = "t_user")
 @Entity

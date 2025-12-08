@@ -1,10 +1,8 @@
 package org.example.auth.service.impl;
 
-import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.PhoneUtil;
 import cn.hutool.core.util.RandomUtil;
 import jakarta.annotation.Resource;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.auth.constant.RedisKeyConstant;
 import org.example.auth.domain.req.SendVerificationCodeReq;
@@ -18,7 +16,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**

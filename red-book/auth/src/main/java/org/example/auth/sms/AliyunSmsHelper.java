@@ -19,11 +19,11 @@ public class AliyunSmsHelper {
 	
 	/**
 	 * 发送短信
-	 * @param signName
-	 * @param templateCode
-	 * @param phone
-	 * @param templateParam
-	 * @return
+	 * @param signName 签名名称
+	 * @param templateCode 短信模板编码
+	 * @param phone 手机号
+	 * @param templateParam 短信模板参数
+	 * @return 是否发送成功
 	 */
 	public boolean sendMessage(String signName, String templateCode, String phone, String templateParam) {
 		com.aliyun.dypnsapi20170525.models.SendSmsVerifyCodeRequest sendSmsVerifyCodeRequest = new com.aliyun.dypnsapi20170525.models.SendSmsVerifyCodeRequest()
