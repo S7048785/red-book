@@ -1,20 +1,17 @@
 package org.example.auth.domain.po;
 
-import org.babyfish.jimmer.sql.Entity;
-import org.babyfish.jimmer.sql.Id;
-import org.babyfish.jimmer.sql.GeneratedValue;
-import org.babyfish.jimmer.sql.Key;
+import jakarta.validation.constraints.Null;
+import org.babyfish.jimmer.sql.*;
 
-import javax.validation.constraints.Null;
-
-import org.babyfish.jimmer.sql.GenerationType;
-
-import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
- * 角色表
+ * @author Nyxcirea
+ * @date 2024/5/23 15:40
+ * @description: 角色表
  */
+@Table(name = "t_role")
 @Entity
 public interface TRole {
 	
@@ -24,7 +21,7 @@ public interface TRole {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY
 	)
-	BigInteger id();
+	long id();
 	
 	/**
 	 * 角色名
@@ -40,12 +37,12 @@ public interface TRole {
 	/**
 	 * 状态(0：启用 1：禁用)
 	 */
-	Short status();
+	int status();
 	
 	/**
 	 * 管理系统中的显示顺序
 	 */
-	Long sort();
+	int sort();
 	
 	/**
 	 * 备注
@@ -63,9 +60,18 @@ public interface TRole {
 	 */
 	LocalDateTime updateTime();
 	
+	@ManyToMany
+	@JoinTable(
+			name = "t_role_permission_rel",
+								joinColumns = @JoinColumn(name = "role_id"),
+								inverseJoinColumns = @JoinColumn(name = "permission_id")
+	)
+	List<TPermission> permissions();
+	
 	/**
 	 * 逻辑删除(0：未删除 1：已删除)
 	 */
-	Boolean deleted();
+	@LogicalDeleted("true")
+	boolean deleted();
 }
 

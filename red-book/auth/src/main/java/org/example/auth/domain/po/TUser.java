@@ -1,21 +1,16 @@
 package org.example.auth.domain.po;
 
-import org.babyfish.jimmer.sql.Entity;
-import org.babyfish.jimmer.sql.Id;
-import org.babyfish.jimmer.sql.GeneratedValue;
-import org.babyfish.jimmer.sql.Key;
+import jakarta.validation.constraints.Null;
+import org.babyfish.jimmer.sql.*;
 
-import javax.validation.constraints.Null;
-
-import org.babyfish.jimmer.sql.GenerationType;
-
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 用户表
  */
+@Table(name = "t_user")
 @Entity
 public interface TUser {
 	
@@ -25,7 +20,7 @@ public interface TUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY
 	)
-	BigInteger id();
+	long id();
 	
 	/**
 	 * 小哈书号(唯一凭证)
@@ -72,12 +67,12 @@ public interface TUser {
 	 * 性别(0：女 1：男)
 	 */
 	@Null
-	Short sex();
+	Integer sex();
 	
 	/**
 	 * 状态(0：启用 1：禁用)
 	 */
-	Short status();
+	int status();
 	
 	/**
 	 * 个人简介
@@ -95,9 +90,18 @@ public interface TUser {
 	 */
 	LocalDateTime updateTime();
 	
+	@ManyToMany
+	@JoinTable(
+			name = "t_user_role_rel",
+								joinColumns = @JoinColumn(name = "user_id"),
+								inverseJoinColumns = @JoinColumn(name = "roleId")
+	)
+	List<TRole> roles();
+	
 	/**
 	 * 逻辑删除(0：未删除 1：已删除)
 	 */
-	Boolean deleted();
+	@LogicalDeleted("true")
+	boolean deleted();
 }
 
