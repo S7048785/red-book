@@ -1,0 +1,22 @@
+export org.example.auth.domain.po.TUser
+    -> package org.example.auth.dto.user
+
+import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
+
+input UserLoginReqInput {
+    @Schema(description = "手机号")
+    @NotBlank(message = "手机号不能为空")
+    phone
+
+    @Schema(description = "验证码")
+    code: String
+
+    @Schema(description = "密码")
+    password
+
+    @Schema(description = "登录类型 1：手机号登录 2：密码登录")
+    @NotNull(message = "登录类型不能为空")
+    type: Int
+}

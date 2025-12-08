@@ -18,8 +18,9 @@ public enum ResponseCodeEnum implements BaseExceptionInterface {
     PARAM_NOT_VALID("AUTH-10001", "参数错误"),
 
     VERIFICATION_CODE_SEND_FREQUENTLY("AUTH-10002", "验证码发送过于频繁"),
-     PHONE_NUMBER_FORMAT_ERROR("AUTH-10003", "手机号格式错误");
-
+     PHONE_NUMBER_FORMAT_ERROR("AUTH-10003", "手机号格式错误"),
+    VERIFICATION_CODE_ERROR("AUTH-20001", "验证码错误"),
+    PASSWORD_ERROR("AUTH-20002", "密码错误");
     // 异常码
     private final String errorCode;
     // 错误信息
