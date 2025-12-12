@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 	private String handleVerificationCodeLogin(UserLoginReqInput userLoginReqInput, String phone) {
 		// 从Redis中获取验证码
 		String verificationCode = redisTemplate.opsForValue().get(RedisKeyConstant.buildVerificationCodeKey(phone));
-		long userId = 0;
+		long userId;
 		if (verificationCode == null) {
 			// 验证码不存在
 			throw new BizException(ResponseCodeEnum.VERIFICATION_CODE_ERROR);

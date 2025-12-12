@@ -1,6 +1,5 @@
 package org.example.auth.domain.po;
 
-import jakarta.validation.constraints.Null;
 import org.babyfish.jimmer.sql.*;
 
 import java.time.LocalDateTime;

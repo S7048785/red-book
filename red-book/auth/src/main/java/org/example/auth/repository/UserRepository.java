@@ -4,17 +4,15 @@ import cn.hutool.json.JSONUtil;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.babyfish.jimmer.sql.JSqlClient;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.example.auth.constant.RedisKeyConstant;
 import org.example.auth.constant.RoleConstant;
-import org.example.auth.domain.po.*;
+import org.example.auth.domain.po.TUser;
+import org.example.auth.domain.po.TUserDraft;
+import org.example.auth.domain.po.TUserTable;
 import org.example.auth.dto.user.UserLoginReqInput;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Nyxcirea
@@ -46,13 +44,16 @@ public class UserRepository {
 		Long redBookId = redisTemplate.opsForValue().increment(RedisKeyConstant.buildUserRoleKey(phone));
 		
 		// 注册用户并分配一个默认的角色
-		TUser produce = TUserDraft.$.produce(draft -> draft.setRedBookId(redBookId.toString())
-				.setPhone(phone)
-				.setPassword(userLoginReqInput.getPassword())
-				.setNickname(phone)
-				.setStatus(0)
-				// 默认角色为普通用户
-        .addIntoRoles(role -> role.setId(RoleConstant.COMMON_USER_ROLE_ID))
+		TUser produce = TUserDraft.$.produce(draft -> {
+					assert redBookId != null;
+					draft.setRedBookId(redBookId.toString())
+							.setPhone(phone)
+							.setPassword(userLoginReqInput.getPassword())
+							.setNickname(phone)
+							.setStatus(0)
+							// 默认角色为普通用户
+			        .addIntoRoles(role -> role.setId(RoleConstant.COMMON_USER_ROLE_ID));
+				}
 		);
 		
 		long userId = sqlClient.save(produce).getModifiedEntity().id();
