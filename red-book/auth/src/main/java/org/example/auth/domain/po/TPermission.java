@@ -35,8 +35,7 @@ public interface TPermission {
 	/**
 	 * 类型(1：目录 2：菜单 3：按钮)
 	 */
-	@Null
-	Integer type();
+	int type();
 	
 	/**
 	 * 菜单路由
@@ -61,8 +60,7 @@ public interface TPermission {
 	/**
 	 * 状态(0：启用；1：禁用)
 	 */
-	@Null
-	Integer status();
+	int status();
 	
 	/**
 	 * 创建时间

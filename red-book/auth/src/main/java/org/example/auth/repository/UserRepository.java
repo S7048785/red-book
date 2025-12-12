@@ -1,11 +1,19 @@
 package org.example.auth.repository;
 
+import cn.hutool.json.JSONUtil;
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.babyfish.jimmer.sql.JSqlClient;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.example.auth.constant.RedisKeyConstant;
+import org.example.auth.constant.RoleConstant;
 import org.example.auth.domain.po.*;
 import org.example.auth.dto.user.UserLoginReqInput;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserRepository {
 	private final JSqlClient sqlClient;
+	private final StringRedisTemplate redisTemplate;
 	
 	/**
 	 * 根据手机号查询用户
@@ -30,19 +39,28 @@ public class UserRepository {
 				       .fetchOneOrNull();
 	}
 	
+	@Transactional
 	public long register(UserLoginReqInput userLoginReqInput) {
+		String phone = userLoginReqInput.getPhone();
+		// 获取全局自增的 ID
+		Long redBookId = redisTemplate.opsForValue().increment(RedisKeyConstant.buildUserRoleKey(phone));
+		
 		// 注册用户并分配一个默认的角色
-		TUser produce = TUserDraft.$.produce(draft -> draft.setPhone(userLoginReqInput.getPhone())
+		TUser produce = TUserDraft.$.produce(draft -> draft.setRedBookId(redBookId.toString())
+				.setPhone(phone)
 				.setPassword(userLoginReqInput.getPassword())
-				.setNickname(userLoginReqInput.getPhone())
+				.setNickname(phone)
 				.setStatus(0)
 				// 默认角色为普通用户
-        .addIntoRoles(role -> role.setId(1))
+        .addIntoRoles(role -> role.setId(RoleConstant.COMMON_USER_ROLE_ID))
 		);
 		
-		long userId = sqlClient.save(produce).getOriginalEntity().id();
+		long userId = sqlClient.save(produce).getModifiedEntity().id();
 		
-		sqlClient.save(TRoleTable.$).getOriginalEntity().id();
+		// 将该用户的角色 ID 存入 Redis 中
+		var roles = Lists.newArrayList();
+		roles.add(RoleConstant.COMMON_USER_ROLE_ID);
+		redisTemplate.opsForValue().set(RedisKeyConstant.buildUserRoleKey(phone), JSONUtil.toJsonStr(roles));
 		return userId;
 	}
 }

@@ -28,7 +28,7 @@ public interface TUser {
 	 * 小哈书号(唯一凭证)
 	 */
 	@Key
-	String xiaohashuId();
+	String redBookId();
 	
 	/**
 	 * 密码
@@ -96,7 +96,7 @@ public interface TUser {
 	@JoinTable(
 			name = "t_user_role_rel",
 								joinColumns = @JoinColumn(name = "user_id"),
-								inverseJoinColumns = @JoinColumn(name = "roleId")
+								inverseJoinColumns = @JoinColumn(name = "role_id")
 	)
 	List<TRole> roles();
 	

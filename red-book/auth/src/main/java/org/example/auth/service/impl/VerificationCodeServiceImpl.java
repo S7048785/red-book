@@ -52,14 +52,14 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 		String verificationCode = RandomUtil.randomNumbers(6);
 		
 		// 调用第三方短信发送服务
-		threadPoolTaskExecutor.submit(() -> {
-			String signName = "速通互联验证码"; // 签名，个人测试签名无法修改
-			String templateCode = "100001"; // 短信模板编码
-			// 短信模板参数，code 表示要发送的验证码；min 表示验证码有时间时长，即 3 分钟
-			String templateParam = String.format("{\"code\":\"%s\",\"min\":\"3\"}", verificationCode);
-			aliyunSmsHelper.sendMessage(signName, templateCode, phone, templateParam);
-		});
-		log.info("==> 手机号: {}, 已发送验证码：【{}】", phone, verificationCode);
+		//threadPoolTaskExecutor.submit(() -> {
+		//	String signName = "速通互联验证码"; // 签名，个人测试签名无法修改
+		//	String templateCode = "100001"; // 短信模板编码
+		//	// 短信模板参数，code 表示要发送的验证码；min 表示验证码有时间时长，即 3 分钟
+		//	String templateParam = String.format("{\"code\":\"%s\",\"min\":\"3\"}", verificationCode);
+		//	aliyunSmsHelper.sendMessage(signName, templateCode, phone, templateParam);
+		//});
+		//log.info("==> 手机号: {}, 已发送验证码：【{}】", phone, verificationCode);
 		
 		// 存储验证码到 redis, 并设置过期时间为 3 分钟
 		redisTemplate.opsForValue().set(key, verificationCode, 3, TimeUnit.MINUTES);

@@ -14,6 +14,25 @@ public class RedisKeyConstant {
 	private static final String VERIFICATION_CODE_KEY_PREFIX = "verification_code:";
 	
 	/**
+	 * 全局 ID 生成器 KEY
+	 */
+	public static final String ID_GENERATOR_KEY = "id_generator";
+	/**
+	 * 用户角色数据 KEY 前缀
+	 */
+	private static final String USER_ROLES_KEY_PREFIX = "user:roles:";
+	
+	
+	/**
+	 * 构建用户-角色 Key
+	 * @param phone 手机号
+	 * @return 用户-角色 Key
+	 */
+	public static String buildUserRoleKey(String phone) {
+		return USER_ROLES_KEY_PREFIX + phone;
+	}
+	
+	/**
 	 * 构建验证码 KEY
 	 * @param phone 手机号
 	 * @return 验证码 KEY

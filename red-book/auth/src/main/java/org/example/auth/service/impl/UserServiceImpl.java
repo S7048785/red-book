@@ -1,8 +1,8 @@
 package org.example.auth.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
-import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
+import org.example.auth.constant.RedisKeyConstant;
 import org.example.auth.domain.po.TUser;
 import org.example.auth.dto.user.UserLoginReqInput;
 import org.example.auth.enums.LoginTypeEnum;
@@ -53,7 +53,8 @@ public class UserServiceImpl implements UserService {
 	 */
 	private String handleVerificationCodeLogin(UserLoginReqInput userLoginReqInput, String phone) {
 		// 从Redis中获取验证码
-		String verificationCode = redisTemplate.opsForValue().get(phone);
+		String verificationCode = redisTemplate.opsForValue().get(RedisKeyConstant.buildVerificationCodeKey(phone));
+		long userId = 0;
 		if (verificationCode == null) {
 			// 验证码不存在
 			throw new BizException(ResponseCodeEnum.VERIFICATION_CODE_ERROR);
@@ -67,13 +68,15 @@ public class UserServiceImpl implements UserService {
 		TUser user = userRepository.findByPhone(phone);
 		if (user == null) {
 			// 用户不存在 注册用户
-			long userId = userRepository.register(userLoginReqInput);
+			userId = userRepository.register(userLoginReqInput);
 			
 		} else {
-			// 用户存在 登录
-			StpUtil.login(user.id());
-			return StpUtil.getTokenValue();
+			userId = user.id();
 		}
+		// 用户存在 登录
+		StpUtil.login(userId);
+		// 返回token令牌
+		return StpUtil.getTokenValue();
 	}
 	
 	/**
